@@ -129,3 +129,4 @@ dmypy.json
 
 # IDE Related
 *.code-workspace
+.vscode
