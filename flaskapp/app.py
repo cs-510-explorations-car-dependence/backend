@@ -1,8 +1,13 @@
+import os
+from flaskapp.config import get_config
 from flask import Flask, jsonify
 from flask_cors import CORS #, cross_origin
 
 app = Flask(__name__)
-cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
+with open(os.environ.get("ALLOWED_ORIGINS_PATH"), 'r') as f:
+    origins = [line.strip() for line in f.readlines()]
+cors = CORS(app, resources={r"/api/*": {"origins": origins}})
+app.config.update(get_config())
 
 @app.route('/api/route/')
 def test_route():
