@@ -1,8 +1,10 @@
 import os
+from dotenv import load_dotenv
 from flaskapp.config import get_config
 from flask import Flask, jsonify
 from flask_cors import CORS #, cross_origin
 
+load_dotenv()
 app = Flask(__name__)
 with open(os.environ.get("ALLOWED_ORIGINS_PATH"), 'r') as f:
     origins = [line.strip() for line in f.readlines()]

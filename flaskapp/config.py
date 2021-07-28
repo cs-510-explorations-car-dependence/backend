@@ -1,8 +1,6 @@
 import os
-from dotenv import load_dotenv
 
 def get_config():
-    load_dotenv()
     dev_mode = os.environ.get("FLASK_ENV").lower() == "development"
     return {
         "SECRET_KEY": os.environ.get('SECRET_KEY'),
