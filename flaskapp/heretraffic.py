@@ -12,7 +12,7 @@ class HERETraffic:
 	def get_flow_data(self, upperleftbb, lowerrightbb):
 		"""
 		Gets raw Road Shape and Road Class Filter response. 
-		https://developer.here.com/documentation/traffic/dev_guide/topics_v6.1/example-flow-sh-frc.html
+		An example output is found here: https://developer.here.com/documentation/traffic/dev_guide/topics_v6.1/example-flow-sh-frc.html
 		Both arguments are a (float latitude, float longitude) pair representing either the upper left or the bottom
 		right coordinate of the bounding box to be searched.
 		Returns a (int status_code, dict json_response) pair. If status_code is not 200, then json_response will be empty.
