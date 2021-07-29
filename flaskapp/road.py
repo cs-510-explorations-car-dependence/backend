@@ -15,12 +15,20 @@ class RoadType(enum):
     UNKNOWN = 9        # Yes, "Road" is equivalent to "Unknown"
 
 class Road:
+    """ Contains all significant data we care about in a road that can be aquired from resources. """
     def __init__(self):
         self.name = ""
         self.type = RoadType.UNDEFINED
-        self.shape = []   # 2D array of coordinate pairs
+        self.shape = []   # Array of Segments
         self.lane_count_positive = 0  # Lanes going in one direction
         self.lane_count_negative = 0  # Lanes going in the opposite direction
+
+class Segment:
+    def __init__(self):
+        self.first_coord_pair = None  # (latitude, longitude) tuple
+        self.second_coord_pair = None
+        self.jam_factor = None
+        self.segment_closed = False
 
 def get_road_data(here_json_response, overpass_xml_response):
     """ 
