@@ -1,4 +1,5 @@
 import requests
+import xml.etree.ElementTree as ET
 from flaskapp.resources.utils import raise_if_invalid_coordinates
 
 # https://wiki.openstreetmap.org/wiki/Key:highway
@@ -26,11 +27,19 @@ WAY_FILTERS = (
               )
 
 def get_road_data(upperleftbb, lowerrightbb):
+    """
+    Gets information about all highways found within the bounding box.
+    Both arguments are a (float latitude, float longitude) pair representing either the upper left or the bottom
+    right coordinate of the bounding box to be searched.
+    Returns a (int status_code, xml.etree.ElementTree xml_response) pair. If status_code is not 200, then xml_response will be None.
+    """
     raise_if_invalid_coordinates(upperleftbb)
     raise_if_invalid_coordinates(lowerrightbb)
     url = build_url(upperleftbb, lowerrightbb)
     response = requests.get(url)
-    # TODO Convert to something usable
+    if response.status_code == 200:
+        return 200, ET.fromstring(response.content)
+    return response.status_code, None
 
 def build_url(upperleftbb, lowerrightbb):
     return (
@@ -41,4 +50,3 @@ def build_url(upperleftbb, lowerrightbb):
             f"<;"
         "); out meta;"
     )
-
