@@ -1,7 +1,5 @@
 import requests
-
-class InvalidCoordinates(BaseException):
-	pass
+from flaskapp.resources.utils import raise_if_invalid_coordinates
 
 class HERETraffic:
 	""" A thin wrapper over the HERE Traffic Flow API. """
@@ -17,19 +15,11 @@ class HERETraffic:
 		right coordinate of the bounding box to be searched.
 		Returns a (int status_code, dict json_response) pair. If status_code is not 200, then json_response will be empty.
 		"""
-		self._raise_if_invalid_coordinates(upperleftbb)
-		self._raise_if_invalid_coordinates(lowerrightbb)
+		raise_if_invalid_coordinates(upperleftbb)
+		raise_if_invalid_coordinates(lowerrightbb)
 		request_url = f"{self.url_base}&bbox={upperleftbb[0]},{upperleftbb[1]};{lowerrightbb[0]},{lowerrightbb[1]}"
 		response = requests.get(request_url)
 		if response.status_code == 200:
 			return 200, response.json()
 		return response.status_code, {}
 	
-	@staticmethod
-	def _raise_if_invalid_coordinates(lat_long_pair):
-		lat = lat_long_pair[0]
-		long = lat_long_pair[1]
-		if lat < -90 or lat > 90:
-			raise InvalidCoordinates(f"Latitude ({lat}) must be between -90 and 90 degrees")
-		if long < -180 or long > 80:
-			raise InvalidCoordinates(f"Longitude ({long}) must be between -90 and 90 degrees")
