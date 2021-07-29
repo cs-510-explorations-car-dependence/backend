@@ -19,6 +19,8 @@ class Road:
         self.name = ""
         self.type = RoadType.UNDEFINED
         self.shape = []   # 2D array of coordinate pairs
+        self.lane_count_positive = 0  # Lanes going in one direction
+        self.lane_count_negative = 0  # Lanes going in the opposite direction
 
 def get_road_data(here_json_response, overpass_xml_response):
     """ 
