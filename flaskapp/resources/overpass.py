@@ -1,5 +1,4 @@
 import requests
-import xml.etree.ElementTree as ET
 from flaskapp.resources.utils import raise_if_invalid_coordinates
 
 # https://wiki.openstreetmap.org/wiki/Key:highway
@@ -31,19 +30,19 @@ def get_road_data(upperleftbb, lowerrightbb):
     Gets information about all highways found within the bounding box.
     Both arguments are a (float latitude, float longitude) pair representing either the upper left or the bottom
     right coordinate of the bounding box to be searched.
-    Returns a (int status_code, xml.etree.ElementTree xml_response) pair. If status_code is not 200, then xml_response will be None.
+    Returns a (int status_code, dict json_response) pair. If status_code is not 200, then json_response will be empty.
     """
     raise_if_invalid_coordinates(upperleftbb)
     raise_if_invalid_coordinates(lowerrightbb)
     url = build_url(upperleftbb, lowerrightbb)
     response = requests.get(url)
     if response.status_code == 200:
-        return 200, ET.fromstring(response.content)
-    return response.status_code, None
+        return 200, response.json()
+    return response.status_code, {}
 
 def build_url(upperleftbb, lowerrightbb):
     return (
-        "https://overpass-api.de/api/interpreter?data="
+        "https://overpass-api.de/api/interpreter?data=[out:json];"
         "("
             f"way({upperleftbb[0]},{upperleftbb[1]},{lowerrightbb[0]},{lowerrightbb[1]})"
                 f"{WAY_FILTERS};"
