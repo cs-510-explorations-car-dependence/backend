@@ -22,7 +22,7 @@ class HERETraffic:
 		request_url = f"{self.url_base}&bbox={upperleftbb[0]},{upperleftbb[1]};{lowerrightbb[0]},{lowerrightbb[1]}"
 		response = requests.get(request_url)
 		if response.status_code == 200:
-			return 200, response.json
+			return 200, response.json()
 		return response.status_code, {}
 	
 	@staticmethod
