@@ -31,5 +31,5 @@ class HERETraffic:
 		long = lat_long_pair[1]
 		if lat < -90 or lat > 90:
 			raise InvalidCoordinates(f"Latitude ({lat}) must be between -90 and 90 degrees")
-		if lat < -180 or lat > 80:
-			raise InvalidCoordinates(f"Longitude ({lat}) must be between -90 and 90 degrees")
+		if long < -180 or long > 80:
+			raise InvalidCoordinates(f"Longitude ({long}) must be between -90 and 90 degrees")
