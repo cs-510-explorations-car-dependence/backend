@@ -41,10 +41,14 @@ def get_road_data(upperleftbb, lowerrightbb):
     return response.status_code, {}
 
 def build_url(upperleftbb, lowerrightbb):
+    north = upperleftbb[0]
+    west = upperleftbb[1]
+    south = lowerrightbb[0]
+    east = lowerrightbb[1]
     return (
         "https://overpass-api.de/api/interpreter?data=[out:json];"
         "("
-            f"way({upperleftbb[0]},{upperleftbb[1]},{lowerrightbb[0]},{lowerrightbb[1]})"
+            f"way({south},{west},{north},{east})"
                 f"{WAY_FILTERS};"
             f"<;"
         "); out meta;"
