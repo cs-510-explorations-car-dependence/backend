@@ -97,5 +97,5 @@ def get_road_data(here_dict_response):
                     else:
                         road = Road()
                         roads[name] = road
-                    road.update_via_here_flow_item(flow_item)
+                    road.add_flow_item(flow_item)
     return roads.values()
