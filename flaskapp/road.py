@@ -37,7 +37,7 @@ class Segment:
         self.type = RoadType.UNKNOWN
         self.shape = []  # Array of (latitude, longitude tuple)
         self.jam_factor = None   # Float ranging from 0 to 10, as defined by HERE
-        self.segment_closed = False
+        self.closed = False
         self.length = 0  # Kilometers
 
     def update_via_here_flow_item(self, here_fi):
@@ -56,13 +56,13 @@ class Segment:
                     coordinates = self._get_lat_long_from_string(coordinate_string)
                     self.shape.append(coordinates)
         function_class = max(function_class_count, key=function_class_count.get)
-        self.type = self.convert_function_class_to_roadtype(self.function_class)
+        self.type = self.convert_function_class_to_roadtype(function_class)
 
         # HERE sometimes splits flow data into even finer segments within an "SSS" object inside the "CF" object.
         # We disregard these finer segments, since there's no way to correlate said data to the shape data found above.
         flow_info = here_fi["CF"][0]  # I've never seen more than a single "CF" object. We will assume the first.
         self.jam_factor = flow_info["JF"]
-        self.segment_closed = self.jam_factor == 10
+        self.closed = self.jam_factor == 10
         self.length = here_fi["TMC"]["LE"]
 
     @staticmethod
@@ -98,4 +98,4 @@ def get_road_data(here_dict_response):
                         road = Road()
                         roads[name] = road
                     road.add_flow_item(flow_item)
-    return roads.values()
+    return list(roads.values())
