@@ -13,11 +13,11 @@ Flask-Cors = "==3.0.10"
 Jinja2 = "==3.0.1"
 MarkupSafe = "==2.0.1"
 Werkzeug = "==2.0.1"
-python-dotenv = "*"
 requests = "*"
 python-levenshtein = "*"
 
 [dev-packages]
+python-dotenv = "*"
 pytest = "*"
 
 [requires]
