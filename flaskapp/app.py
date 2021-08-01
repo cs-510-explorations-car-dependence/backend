@@ -2,11 +2,14 @@ import os
 import flaskapp.errors as errors
 from flask import Flask, jsonify, request
 from flask_cors import CORS #, cross_origin
+from dotenv import load_dotenv
 
 from flaskapp.resources.heretraffic import HERETraffic
+from flaskapp.resources.utils import coordinates_are_valid
 from flaskapp.config import get_config
 from flaskapp.road import get_road_data
-from resources.utils import coordinates_are_valid
+
+load_dotenv()
 
 app = Flask(__name__)
 with open(os.environ.get("ALLOWED_ORIGINS_PATH"), 'r') as f:
