@@ -51,7 +51,8 @@ def bbox():
                     "VOC": 0,
                     "PM2.5": 0,
                     "PM10": 0,
-                    "CO2": segment.jam_factor   # Like I said, temporary code :)
+                    "CO2": segment.jam_factor,   # Like I said, temporary code :)
+                    "shape": segment.shape
                 })
             emission_data = {
                 "road": road.name,
