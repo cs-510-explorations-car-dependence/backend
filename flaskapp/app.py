@@ -45,7 +45,7 @@ def bbox():
         response = []
         for road in roads:
             segments = []
-            for segment in roads.segments:
+            for segment in road.segments:
                 segments.append({
                     "NOx": 0,
                     "VOC": 0,
@@ -75,7 +75,7 @@ def get_coordinates(coordinate_string):
     lat_str, long_str = coordinate_string.split(",")
     coords = ( float(lat_str), float(long_str) )
     if coordinates_are_valid(coords):
-        return (float(lat_str))
+        return (float(lat_str), float(long_str))
     else:
         return None
 
