@@ -63,6 +63,7 @@ def get_road_data(here_dict_response, overpass_dict_response):
     possible_roads = []
     returned_roads = []
     for obj in overpass_dict_response:
+        # TODO This doesn't work. Overpass breaks roads up into multiple ways. Should have expected that.
         if obj["type"] == "way":
             new_road = Road()
             new_road.update_overpass_schema(obj)
