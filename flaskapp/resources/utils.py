@@ -6,5 +6,5 @@ def raise_if_invalid_coordinates(lat_long_pair):
 	long = lat_long_pair[1]
 	if lat < -90 or lat > 90:
 		raise InvalidCoordinates(f"Latitude ({lat}) must be between -90 and 90 degrees")
-	if long < -180 or long > 80:
+	if long < -180 or long > 180:
 		raise InvalidCoordinates(f"Longitude ({long}) must be between -90 and 90 degrees")
