@@ -75,7 +75,7 @@ class Segment:
         self.closed = self.jam_factor == 10
         length = here_fi["TMC"]["LE"]
         self.length = length * 0.621371 if self.length_unit is Unit.METRIC else length
-        self.direction = Direction.POSTIVE if here_fi["TMC"]["QD"] == "+" else Direction.NEGATIVE
+        self.direction = Direction.POSITIVE if here_fi["TMC"]["QD"] == "+" else Direction.NEGATIVE
 
     @staticmethod
     def _get_lat_long_from_string(string):
@@ -99,7 +99,7 @@ class Segment:
 
 def get_road_data(here_dict_response):
     roads = {}
-    unit = Unit.METRIC if here_dict_response["RWS"]["UNITS"] == "metric" else Unit.IMPERIAL
+    unit = Unit.METRIC if here_dict_response["UNITS"] == "metric" else Unit.IMPERIAL
     for RWS_obj in here_dict_response["RWS"]:  # I've never seen RWS hold more than one object, but playing it safe
         for roadway in RWS_obj["RW"]:
             for FIS_obj in roadway["FIS"]:   # I have never seen FIS hold more than one object, but playing it safe
