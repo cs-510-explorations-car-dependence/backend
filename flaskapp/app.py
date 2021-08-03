@@ -23,7 +23,7 @@ app.config.update(get_config())
 
 # Query should look like the following:
 # ?ul=lat,long?br=lat,long 
-@app.route('/api/v1/bbox/')
+@app.route('/api/v1/bbox')
 def bbox():
     args = request.args
     if "ul" not in args or "br" not in args:
