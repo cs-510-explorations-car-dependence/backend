@@ -36,6 +36,9 @@ class Road:
         Parses a flow item and updates the Road's segments with their current traffic flow.
         """
         self.name = here_fi["TMC"]["DE"]
+        flow_info = here_fi["CF"][0]  # I've never seen more than a single "CF" object. We will assume the first.
+        if flow_info["JF"] == -1:   # Without knowing the jam factor, we have no clue how jammed the road is. Ignored.
+            return
         segment = Segment(self.length_unit)
         segment.update_via_here_flow_item(here_fi)
         self.segments.append(segment)
