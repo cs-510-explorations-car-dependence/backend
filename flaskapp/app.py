@@ -7,6 +7,7 @@ from flaskapp.resources.heretraffic import HERETraffic
 from flaskapp.resources.utils import coordinates_are_valid
 from flaskapp.config import get_config
 from flaskapp.road import get_road_data
+from flaskapp.emissions import model_road_emissions
 
 try:
     from dotenv import load_dotenv
@@ -19,6 +20,7 @@ with open(os.environ.get("ALLOWED_ORIGINS_PATH"), 'r') as f:
     origins = [line.strip() for line in f.readlines()]
 cors = CORS(app, resources={r"/api/*": {"origins": origins}})
 app.config.update(get_config())
+here = HERETraffic(app.config["HERE_TRAFFIC_API_KEY"])
 
 
 # Query should look like the following:
@@ -37,31 +39,13 @@ def bbox():
     if upper_left is None or bottom_right is None:
         return generate_error_response(errors.INVALID_COORDINATES, "Latitude must be >= -90 and <= 90, longitude must be >= -180 and <= 180"), 400
     
-    # TODO Temporary code. Must calculate emission data. Likely in a seperate module.
-    here = HERETraffic(app.config["HERE_TRAFFIC_API_KEY"])
     code, response = here.get_flow_data(upper_left, bottom_right)
     if code == 200:
         roads = get_road_data(response)
-        response = []
-        for road in roads:
-            segments = []
-            for segment in road.segments:
-                segments.append({
-                    "NOx": 0,
-                    "VOC": 0,
-                    "PM2.5": 0,
-                    "PM10": 0,
-                    "CO2": segment.jam_factor,   # Like I said, temporary code :)
-                    "shape": segment.shape
-                })
-            emission_data = {
-                "road": road.name,
-                "segments": segments
-            }
-            response.append(emission_data)
-        return jsonify(response), 200
+        model = model_road_emissions(roads)
+        return jsonify(model), 200
     else:
-        return f"Looks like HERE isn't happy. Response code: {code}", 500
+        return f"Looks like HERE isn't happy. Response code: {code}", 500  # TODO HERE Error handling
 
 def valid_coordinate_format(coordinate_string):
     try:
