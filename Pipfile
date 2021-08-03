@@ -14,7 +14,6 @@ Jinja2 = "==3.0.1"
 MarkupSafe = "==2.0.1"
 Werkzeug = "==2.0.1"
 requests = "*"
-python-levenshtein = "*"
 
 [dev-packages]
 python-dotenv = "*"
