@@ -11,7 +11,7 @@
 7) `export DEV_HERE_TRAFFIC_API_KEY=your_api_key`
 8) `flask run`
 
-Optionally, you may create a new file in the root project directory `.env` like below. Any time `flask run` is executed, it'll automatically export these variables.
+Optionally, you may create a new file in the root project directory named `.env` like below. Any time `flask run` is executed, it'll automatically export these variables.
 ```
 FLASK_APP=flaskapp/app.py
 FLASK_ENV=development
