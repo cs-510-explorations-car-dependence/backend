@@ -1,5 +1,4 @@
 from enum import Enum
-import Levenshtein
 
 # Based on https://wiki.openstreetmap.org/wiki/Key:highway
 class RoadType(Enum):
