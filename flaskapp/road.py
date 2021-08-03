@@ -14,12 +14,21 @@ class RoadType(Enum):
     ROAD = 9
     UNKNOWN = 9        # Yes, "Road" is equivalent to "Unknown"
 
+class Unit(Enum):
+    METRIC = 0
+    IMPERIAL = 1
+
+class Direction(Enum):
+    POSITIVE = 0
+    NEGATIVE = 1
+
 class Road:
 
     """ Contains all significant data we care about in a road that can be aquired from resources. """
-    def __init__(self):
+    def __init__(self, length_unit):
         self.name = ""
         self.segments = []
+        self.length_unit = length_unit
 
     # Each flow item is a segment of a Road.
     def add_flow_item(self, here_fi):
@@ -27,17 +36,19 @@ class Road:
         Parses a flow item and updates the Road's segments with their current traffic flow.
         """
         self.name = here_fi["TMC"]["DE"]
-        segment = Segment()
+        segment = Segment(self.length_unit)
         segment.update_via_here_flow_item(here_fi)
         self.segments.append(segment)
 
 class Segment:
-    def __init__(self):
+    def __init__(self, length_unit):
         self.type = RoadType.UNKNOWN
+        self.direction = None
         self.shape = []  # Array of (latitude, longitude tuple)
         self.jam_factor = None   # Float ranging from 0 to 10, as defined by HERE
         self.closed = False
-        self.length = 0  # Kilometers
+        self.length_unit = length_unit  # Describes whether flow items are metric or imperial
+        self.length = 0
 
     def update_via_here_flow_item(self, here_fi):
         function_class_count = {   # Each SHP has a function class, indicating road type. Each segment's type is 
@@ -62,7 +73,9 @@ class Segment:
         flow_info = here_fi["CF"][0]  # I've never seen more than a single "CF" object. We will assume the first.
         self.jam_factor = flow_info["JF"]
         self.closed = self.jam_factor == 10
-        self.length = here_fi["TMC"]["LE"]
+        length = here_fi["TMC"]["LE"]
+        self.length = length * 0.621371 if self.length_unit is Unit.METRIC else length
+        self.direction = Direction.POSTIVE if here_fi["TMC"]["QD"] == "+" else Direction.NEGATIVE
 
     @staticmethod
     def _get_lat_long_from_string(string):
@@ -86,6 +99,7 @@ class Segment:
 
 def get_road_data(here_dict_response):
     roads = {}
+    unit = Unit.METRIC if here_dict_response["RWS"]["UNITS"] == "metric" else Unit.IMPERIAL
     for RWS_obj in here_dict_response["RWS"]:  # I've never seen RWS hold more than one object, but playing it safe
         for roadway in RWS_obj["RW"]:
             for FIS_obj in roadway["FIS"]:   # I have never seen FIS hold more than one object, but playing it safe
@@ -94,7 +108,7 @@ def get_road_data(here_dict_response):
                     if name in roads:
                         road = roads[name]
                     else:
-                        road = Road()
+                        road = Road(unit)
                         roads[name] = road
                     road.add_flow_item(flow_item)
     return list(roads.values())
