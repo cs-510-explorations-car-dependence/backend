@@ -67,3 +67,23 @@ def calculate_segment_emissions(segment):
     e.nox = personal_cars * NOX_AVG_EMISSIONS
     e.pm25 = personal_cars * PM2_5_AVG_EMISSIONS
     return e
+
+def model_road_emissions(roads):
+    data = []
+    for road in roads:
+        emissions = []
+        for segment in road.segments:
+            segment_emissions = calculate_segment_emissions(segment)
+            emissions.append({
+                "NOx": segment_emissions.nox,
+                "CO2": segment_emissions.co2,
+                "PM2.5": segment_emissions.pm25,
+                "PM10": 0,  #TODO Missing
+                "VOC": 0,  # TODO Missing
+                "shape": segment.shape
+            })
+        data.append({
+            "road": road.name,
+            "segments": emissions
+        })
+    return data
