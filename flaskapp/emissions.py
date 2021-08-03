@@ -28,7 +28,7 @@ LOS_E_RANGE = (LOS_E, LOS_F)
 
 # Lanes per direction. (So, a total of 10 lanes if MOTORWAY goes in both directions)
 lanes = {
-    RoadType.MOTORWAY: 5, # Usually varies between 4 to 5 lanes, but not uncommon to see 5+, so we'll stick with 5
+    RoadType.MOTORWAY: 4.25, # Usually varies between 3 to 5 lanes, but not uncommon to see 5+, so it's biased a bit towards 5
     RoadType.TRUNK: 3,
     RoadType.PRIMARY: 2,
     RoadType.UNCLASSIFIED: 1,
@@ -46,16 +46,16 @@ def calculate_segment_emissions(segment):
         normalized = jam_factor / 2 if jam_factor != 0 else 0.0000001   # Prevents divide by zero later.
     elif jam_factor > 2 and jam_factor <= 4:
         range = LOS_B_RANGE
-        normalized = jam_factor - 2 / 2
+        normalized = (jam_factor - 2) / 2
     elif jam_factor > 4 and jam_factor <= 6:
         range = LOS_C_RANGE
-        normalized = jam_factor - 4 / 2
+        normalized = (jam_factor - 4) / 2
     elif jam_factor > 6 and jam_factor <= 8:
         range = LOS_D_RANGE
-        normalized = jam_factor - 6 / 2
+        normalized = (jam_factor - 6) / 2
     else:  # Must be between 8 and 10
         range = LOS_E_RANGE
-        normalized = jam_factor - 8 / 2
+        normalized = (jam_factor - 8) / 2
     # normalized represents "how far" a number is from the lower to the upper bound of its category.
     # For example, 5.68 maps to the 4 thru 6 category, so normalized is 0.84 since 5.68 is 84% of the way from 4 to 6.
     lower_limit, upper_limit = range
