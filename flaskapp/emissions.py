@@ -1,4 +1,4 @@
-from flaskapp.road import RoadType
+from flaskapp.road import RoadType, Unit
 
 class SegmentEmissions:
     def __init__(self):
@@ -61,7 +61,8 @@ def calculate_segment_emissions(segment):
     lower_limit, upper_limit = range
     pc_per_mile_per_lane = (upper_limit - lower_limit) * normalized + lower_limit
 
-    personal_cars = pc_per_mile_per_lane * lanes[segment.type] * segment.length
+    length_in_miles = segment.length * 0.621371 if segment.length_unit is Unit.METRIC else segment.length
+    personal_cars = pc_per_mile_per_lane * lanes[segment.type] * length_in_miles
     e.co2 = personal_cars * CO2_AVG_EMISSIONS
     e.nox = personal_cars * NOX_AVG_EMISSIONS
     e.pm25 = personal_cars * PM2_5_AVG_EMISSIONS
