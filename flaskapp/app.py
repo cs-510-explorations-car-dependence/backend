@@ -64,6 +64,18 @@ def get_coordinates(coordinate_string):
     else:
         return None
 
+DIST_BETWEEN_LAT = 68.939
+DIST_BETWEEN_LONG = 54.583
+def calculate_coordinate_area(upper_left, bottom_right):
+    """ Approximates the surface area (in square miles) of coordinates.  """
+    x1, y1 = upper_left
+    x2, y2 = bottom_right
+    x1 += 90   # Translate everything out of the negative range. We only care about distance between points.
+    x2 += 90
+    y1 += 180 
+    y2 += 180 
+    return (abs(x1 - x2) * DIST_BETWEEN_LONG) * (abs(y1 - y2) * DIST_BETWEEN_LAT)
+
 def generate_error_response(name, description):
     return jsonify(
         {
