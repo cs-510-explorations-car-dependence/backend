@@ -43,7 +43,7 @@ def calculate_segment_emissions(segment):
     jam_factor = segment.jam_factor
     if jam_factor >= 0 and jam_factor <= 2:
         range = LOS_A_RANGE
-        normalized = jam_factor / 2 if jam_factor != 0 else 0.0000001   # Prevents divide by zero later.
+        normalized = jam_factor / 2 
     elif jam_factor > 2 and jam_factor <= 4:
         range = LOS_B_RANGE
         normalized = (jam_factor - 2) / 2
