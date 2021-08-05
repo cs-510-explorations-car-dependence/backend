@@ -48,7 +48,7 @@ def bbox():
         model = model_road_emissions(roads)
         return jsonify(model), 200
     else:
-        return f"Looks like HERE isn't happy. Response code: {code}", 500  # TODO HERE Error handling
+        return f"", 503  
 
 def valid_coordinate_format(coordinate_string):
     try:
