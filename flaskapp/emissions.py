@@ -7,9 +7,9 @@ class SegmentEmissions:
         self.pm25 = 0
 
 # Average emissions for personal cars. Numbers represent grams per mile (g/mi)
-CO2_AVG_EMISSIONS = 404.0
-NOX_AVG_EMISSIONS = 0.192
-PM2_5_AVG_EMISSIONS = 0.008 
+CO2_AVG_GRAMS_PER_MILE_PER_CAR = 404.0
+NOX_AVG_GRAMS_PER_MILE_PER_CAR = 0.192
+PM2_5_AVG_GRAMS_PER_MILE_PER_CAR = 0.008 
 # TODO Missing a few.
 
 # Level of service categories. Numbers represent personal car per mile per lane (PC/mi/Ln)
@@ -63,10 +63,10 @@ def calculate_segment_emissions(segment):
 
     length_in_miles = segment.length * 0.621371 if segment.length_unit is Unit.METRIC else segment.length
     personal_cars = pc_per_mile_per_lane * lanes[segment.type] * length_in_miles
-    e.co2 = personal_cars * CO2_AVG_EMISSIONS
-    e.nox = personal_cars * NOX_AVG_EMISSIONS
-    e.pm25 = personal_cars * PM2_5_AVG_EMISSIONS
-    return e
+    e.co2 = personal_cars * CO2_AVG_GRAMS_PER_MILE_PER_CAR * length_in_miles
+    e.nox = personal_cars * NOX_AVG_GRAMS_PER_MILE_PER_CAR * length_in_miles
+    e.pm25 = personal_cars * PM2_5_AVG_GRAMS_PER_MILE_PER_CAR * length_in_miles
+    return e, personal_cars
 
 def model_road_emissions(roads):
     data = []
@@ -87,3 +87,4 @@ def model_road_emissions(roads):
             "segments": emissions
         })
     return data
+
