@@ -67,8 +67,9 @@ def get_coordinates(coordinate_string):
     else:
         return None
 
-DIST_BETWEEN_LAT = 68.939
-DIST_BETWEEN_LONG = 54.583
+# Approximately the distance between degrees of latitude and longitude.
+MILES_BETWEEN_LAT = 68.939
+MILES_BETWEEN_LONG = 54.583
 def calculate_coordinate_area(upper_left, bottom_right):
     """ Approximates the surface area (in square miles) of coordinates.  """
     x1, y1 = upper_left
@@ -77,7 +78,7 @@ def calculate_coordinate_area(upper_left, bottom_right):
     x2 += 90
     y1 += 180 
     y2 += 180 
-    return (abs(x1 - x2) * DIST_BETWEEN_LONG) * (abs(y1 - y2) * DIST_BETWEEN_LAT)
+    return (abs(x1 - x2) * MILES_BETWEEN_LONG) * (abs(y1 - y2) * MILES_BETWEEN_LAT)
 
 def generate_error_response(name, description):
     return jsonify(
