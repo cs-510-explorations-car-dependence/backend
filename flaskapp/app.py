@@ -38,6 +38,9 @@ def bbox():
     bottom_right = get_coordinates(bottom_right_string)
     if upper_left is None or bottom_right is None:
         return generate_error_response(errors.INVALID_COORDINATES, "Latitude must be >= -90 and <= 90, longitude must be >= -180 and <= 180"), 400
+    area = calculate_coordinate_area(upper_left, bottom_right)
+    if area > 8000:
+        return generate_error_response(errors.BBOX_TOO_LARGE, "Area of bounding box is too large.")
     
     code, response = here.get_flow_data(upper_left, bottom_right)
     if code == 200:
