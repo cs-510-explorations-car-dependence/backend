@@ -6,7 +6,6 @@ class SegmentEmissions:
         self.nox = 0
         self.pm25 = 0
 
-# Average emissions for personal cars. Numbers represent grams per mile (g/mi)
 CO2_AVG_GRAMS_PER_MILE_PER_CAR = 404.0
 NOX_AVG_GRAMS_PER_MILE_PER_CAR = 0.192
 PM2_5_AVG_GRAMS_PER_MILE_PER_CAR = 0.008 
