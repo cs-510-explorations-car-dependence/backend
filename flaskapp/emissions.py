@@ -55,8 +55,7 @@ def calculate_segment_emissions(segment):
     lower_limit, upper_limit = range
     pc_per_mile_per_lane = (upper_limit - lower_limit) * normalized + lower_limit
 
-    length_in_miles = segment.length * 0.621371 if segment.length_unit is Unit.METRIC else segment.length
-    personal_cars = pc_per_mile_per_lane * lanes[segment.type] * length_in_miles
+    personal_cars_per_mile = pc_per_mile_per_lane * lanes[segment.type]
     e.co = personal_cars * CO_AVG_GRAMS_PER_MILE_PER_CAR 
     e.co2 = personal_cars * CO2_AVG_GRAMS_PER_MILE_PER_CAR 
     e.nox = personal_cars * NOX_AVG_GRAMS_PER_MILE_PER_CAR 
