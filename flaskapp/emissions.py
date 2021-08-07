@@ -56,10 +56,10 @@ def calculate_segment_emissions(segment):
     pc_per_mile_per_lane = (upper_limit - lower_limit) * normalized + lower_limit
 
     personal_cars_per_mile = pc_per_mile_per_lane * lanes[segment.type]
-    e.co = personal_cars * CO_AVG_GRAMS_PER_MILE_PER_CAR 
-    e.co2 = personal_cars * CO2_AVG_GRAMS_PER_MILE_PER_CAR 
-    e.nox = personal_cars * NOX_AVG_GRAMS_PER_MILE_PER_CAR 
-    e.pm25 = personal_cars * PM2_5_AVG_GRAMS_PER_MILE_PER_CAR 
+    e.co = personal_cars_per_mile * CO_AVG_GRAMS_PER_MILE_PER_CAR 
+    e.co2 = personal_cars_per_mile * CO2_AVG_GRAMS_PER_MILE_PER_CAR 
+    e.nox = personal_cars_per_mile * NOX_AVG_GRAMS_PER_MILE_PER_CAR 
+    e.pm25 = personal_cars_per_mile * PM2_5_AVG_GRAMS_PER_MILE_PER_CAR 
     return e
 
 def model_road_emissions(roads):
