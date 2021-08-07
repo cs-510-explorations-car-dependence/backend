@@ -18,6 +18,7 @@ requests = "*"
 [dev-packages]
 python-dotenv = "*"
 pytest = "*"
+rope = "*"
 
 [requires]
 python_version = "3.7"
