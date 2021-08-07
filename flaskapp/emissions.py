@@ -2,6 +2,7 @@ from flaskapp.road import RoadType, Unit
 
 class SegmentEmissions:
     def __init__(self):
+        # Numbers ought to be gram per mile.
         self.co = 0
         self.co2 = 0
         self.nox = 0
