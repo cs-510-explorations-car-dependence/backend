@@ -13,18 +13,11 @@ NOX_AVG_GRAMS_PER_MILE_PER_CAR = 0.192
 PM2_5_AVG_GRAMS_PER_MILE_PER_CAR = 0.008 
 
 # Level of service categories. Numbers represent personal car per mile per lane (PC/mi/Ln)
-LOS_A = 11    # Best case (No, we never assume a road has 0 cars at any time.
-LOS_B = 18    #            HERE doesn't provide enough information about quiet roads for that to be a good assumption.)
-LOS_C = 26
-LOS_D = 35
-LOS_E = 45
-LOS_F = 200   # Worst case
-
-LOS_A_RANGE = (LOS_A, LOS_B)
-LOS_B_RANGE = (LOS_B, LOS_C)
-LOS_C_RANGE = (LOS_C, LOS_D)
-LOS_D_RANGE = (LOS_D, LOS_E)
-LOS_E_RANGE = (LOS_E, LOS_F)
+LOS_A_RANGE = (6, 11)   # Best case. No, we never assume a road has 0 cars at any time.
+LOS_B_RANGE = (11, 18)  # HERE doesn't provide enough information about quiet roads for that to be a good assumption.
+LOS_C_RANGE = (18, 26)
+LOS_D_RANGE = (26, 35)
+LOS_E_RANGE = (35, 200)
 
 # Lanes per direction. (So, a total of 10 lanes if MOTORWAY goes in both directions)
 lanes = {
@@ -63,10 +56,10 @@ def calculate_segment_emissions(segment):
 
     length_in_miles = segment.length * 0.621371 if segment.length_unit is Unit.METRIC else segment.length
     personal_cars = pc_per_mile_per_lane * lanes[segment.type] * length_in_miles
-    e.co = personal_cars * CO_AVG_GRAMS_PER_MILE_PER_CAR * length_in_miles
-    e.co2 = personal_cars * CO2_AVG_GRAMS_PER_MILE_PER_CAR * length_in_miles
-    e.nox = personal_cars * NOX_AVG_GRAMS_PER_MILE_PER_CAR * length_in_miles
-    e.pm25 = personal_cars * PM2_5_AVG_GRAMS_PER_MILE_PER_CAR * length_in_miles
+    e.co = personal_cars * CO_AVG_GRAMS_PER_MILE_PER_CAR 
+    e.co2 = personal_cars * CO2_AVG_GRAMS_PER_MILE_PER_CAR 
+    e.nox = personal_cars * NOX_AVG_GRAMS_PER_MILE_PER_CAR 
+    e.pm25 = personal_cars * PM2_5_AVG_GRAMS_PER_MILE_PER_CAR 
     return e
 
 def model_road_emissions(roads):
