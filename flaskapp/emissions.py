@@ -2,14 +2,15 @@ from flaskapp.road import RoadType, Unit
 
 class SegmentEmissions:
     def __init__(self):
+        self.co = 0
         self.co2 = 0
         self.nox = 0
         self.pm25 = 0
 
+CO_AVG_GRAMS_PER_MILE_PER_CAR = 4.152
 CO2_AVG_GRAMS_PER_MILE_PER_CAR = 404.0
 NOX_AVG_GRAMS_PER_MILE_PER_CAR = 0.192
 PM2_5_AVG_GRAMS_PER_MILE_PER_CAR = 0.008 
-# TODO Missing a few.
 
 # Level of service categories. Numbers represent personal car per mile per lane (PC/mi/Ln)
 LOS_A = 11    # Best case (No, we never assume a road has 0 cars at any time.
@@ -62,10 +63,11 @@ def calculate_segment_emissions(segment):
 
     length_in_miles = segment.length * 0.621371 if segment.length_unit is Unit.METRIC else segment.length
     personal_cars = pc_per_mile_per_lane * lanes[segment.type] * length_in_miles
+    e.co = personal_cars * CO_AVG_GRAMS_PER_MILE_PER_CAR * length_in_miles
     e.co2 = personal_cars * CO2_AVG_GRAMS_PER_MILE_PER_CAR * length_in_miles
     e.nox = personal_cars * NOX_AVG_GRAMS_PER_MILE_PER_CAR * length_in_miles
     e.pm25 = personal_cars * PM2_5_AVG_GRAMS_PER_MILE_PER_CAR * length_in_miles
-    return e, personal_cars
+    return e
 
 def model_road_emissions(roads):
     data = []
@@ -74,11 +76,10 @@ def model_road_emissions(roads):
         for segment in road.segments:
             segment_emissions = calculate_segment_emissions(segment)
             emissions.append({
-                "NOx": segment_emissions.nox,
+                "CO": segment_emissions.co,
                 "CO2": segment_emissions.co2,
+                "NOx": segment_emissions.nox,
                 "PM2.5": segment_emissions.pm25,
-                "PM10": 0,  #TODO Missing
-                "VOC": 0,  # TODO Missing
                 "shape": segment.shape
             })
         data.append({
